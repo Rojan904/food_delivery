@@ -6,13 +6,17 @@ import '../../../widgets/widgets.dart';
 
 class TimeLocationComponent extends StatelessWidget {
   const TimeLocationComponent({
-    super.key, required this.text,
+    super.key,
+    required this.text,
   });
-final String text;
+  final String text;
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      BigText(text: text,size: Dimensions.font26,),
+      BigText(
+        text: text,
+        size: Dimensions.font26,
+      ),
       SizedBox(
         height: Dimensions.height10,
       ),
@@ -44,7 +48,7 @@ final String text;
         ],
       ),
       SizedBox(
-        height: Dimensions.height15,
+        height: Dimensions.height10,
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

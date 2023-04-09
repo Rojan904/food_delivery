@@ -1,3 +1,4 @@
+import 'package:food_delivery/core/constants/app_constants.dart';
 import 'package:get/get.dart';
 
 //we are controlling api connection with getx package
@@ -9,6 +10,7 @@ class ApiClient extends GetConnect implements GetxService {
     //baseurl and timeout is from getx package
     baseUrl = appBaseUrl;
     timeout = const Duration(seconds: 30);
+    token = AppConstants.token;
     mainHeaders = {
       'Content-type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
@@ -16,11 +18,11 @@ class ApiClient extends GetConnect implements GetxService {
   }
   Future<Response> getData(String uri) async {
     try {
-      //get method is from getx and getx uses http client 
+      //get method is from getx and getx uses http client
       Response response = await get(uri);
       return response;
     } catch (e) {
-      return Response(statusCode: 1,statusText: e.toString());
+      return Response(statusCode: 1, statusText: e.toString());
     }
   }
 }

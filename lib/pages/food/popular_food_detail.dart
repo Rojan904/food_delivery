@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/pages/home/main_food_page.dart';
 import 'package:food_delivery/utils/colors/colors.dart';
 import 'package:food_delivery/utils/dimensions/dimensions.dart';
 import 'package:food_delivery/widgets/widgets.dart';
+import 'package:get/get.dart';
 
 import '../home/components/time_location.dart';
 
@@ -32,7 +34,9 @@ class PopularFoodDetail extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppIcon(icon: Icons.arrow_back_ios),
+                  GestureDetector(
+                      onTap: () => Get.to(MainFoodPage()),
+                      child: AppIcon(icon: Icons.arrow_back_ios)),
                   AppIcon(icon: Icons.shopping_cart_checkout_outlined),
                 ],
               )),
