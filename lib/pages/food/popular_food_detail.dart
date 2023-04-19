@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controller/product_controller.dart';
+import 'package:food_delivery/core/constants/api_path.dart';
+import 'package:food_delivery/core/constants/app_constants.dart';
+import 'package:food_delivery/core/routes/route_helper.dart';
 import 'package:food_delivery/pages/home/main_food_page.dart';
 import 'package:food_delivery/utils/colors/colors.dart';
 import 'package:food_delivery/utils/dimensions/dimensions.dart';
@@ -8,10 +12,11 @@ import 'package:get/get.dart';
 import '../home/components/time_location.dart';
 
 class PopularFoodDetail extends StatelessWidget {
-  const PopularFoodDetail({super.key});
-
+  const PopularFoodDetail({super.key, required this.pageId});
+  final int pageId;
   @override
   Widget build(BuildContext context) {
+    final product = Get.find<ProductController>().popularProductList[pageId];
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -24,7 +29,9 @@ class PopularFoodDetail extends StatelessWidget {
                 height: Dimensions.popularFoodImgSize,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/images/food.jpg"),
+                        image: NetworkImage(ApiPath.baseUrl +
+                            AppConstants.uploadUrl +
+                            product.img),
                         fit: BoxFit.cover)),
               )),
           Positioned(
@@ -35,7 +42,7 @@ class PopularFoodDetail extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                      onTap: () => Get.to(MainFoodPage()),
+                      onTap: () => Get.toNamed(RouteHelper.getInitital()),
                       child: AppIcon(icon: Icons.arrow_back_ios)),
                   AppIcon(icon: Icons.shopping_cart_checkout_outlined),
                 ],
@@ -61,7 +68,7 @@ class PopularFoodDetail extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TimeLocationComponent(
-                      text: "Pancakes",
+                      text: product.name!,
                     ),
                     SizedBox(
                       height: Dimensions.height20,
@@ -72,7 +79,7 @@ class PopularFoodDetail extends StatelessWidget {
                     ),
                     Expanded(
                         child: SingleChildScrollView(
-                            child: ExpandableText(text: "Chicken")))
+                            child: ExpandableText(text: product.description)))
                   ],
                 ),
               ))
@@ -124,7 +131,7 @@ class PopularFoodDetail extends StatelessWidget {
                   horizontal: Dimensions.width20,
                   vertical: Dimensions.height20),
               child: BigText(
-                text: "Add to Cart",
+                text: "\$ ${product.price!}| Add to Cart",
                 color: Colors.white,
               ),
               decoration: BoxDecoration(

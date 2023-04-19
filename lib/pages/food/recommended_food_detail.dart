@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controller/product_controller.dart';
+import 'package:food_delivery/core/constants/api_path.dart';
+import 'package:food_delivery/core/constants/app_constants.dart';
+import 'package:food_delivery/core/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors/colors.dart';
 import 'package:food_delivery/utils/dimensions/dimensions.dart';
 import 'package:food_delivery/widgets/app_icon.dart';
 import 'package:food_delivery/widgets/expandable_text.dart';
+import 'package:get/get.dart';
 
 import '../../widgets/big_text.dart';
 
 class RecommendedFoodDetail extends StatelessWidget {
-  const RecommendedFoodDetail({super.key});
-
+  const RecommendedFoodDetail({super.key, required this.pageId});
+  final int pageId;
   @override
   Widget build(BuildContext context) {
+    var product = Get.find<ProductController>().recommendedProductList[pageId];
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: 70,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.clear),
+                GestureDetector(
+                    onTap: () => Get.toNamed(RouteHelper.getInitital()),
+                    child: AppIcon(icon: Icons.clear)),
                 AppIcon(icon: Icons.shopping_cart_checkout_outlined)
               ],
             ),
@@ -36,7 +45,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                     padding: EdgeInsets.only(top: 5, bottom: 10),
                     child: Center(
                         child: BigText(
-                      text: "App Bar",
+                      text: product.name!,
                       size: Dimensions.font26,
                     ))),
                 preferredSize: Size.fromHeight(20)),
@@ -44,8 +53,8 @@ class RecommendedFoodDetail extends StatelessWidget {
             backgroundColor: AppColors.yellowColor,
             expandedHeight: 300, //expands widget height upto 300
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                "assets/images/food.jpg",
+              background: Image.network(
+                ApiPath.baseUrl + AppConstants.uploadUrl + product.img!,
                 width: double.maxFinite,
                 fit: BoxFit.cover,
               ),
@@ -57,9 +66,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(
                       left: Dimensions.width20, right: Dimensions.width20),
-                  child: ExpandableText(
-                      text:
-                          "Chicken marinated in a soiced yoghurt. Chicken marinated in a soiced yoghurt. Chicken marinated in a soiced yoghurt. Chicken marinated in a soiced yoghurt."),
+                  child: ExpandableText(text: product.description!),
                 ),
               ],
             ),
@@ -83,7 +90,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                   iconSize: Dimensions.iconSize24,
                 ),
                 BigText(
-                  text: "\$12.88 " + " X " + " 0 ",
+                  text: "\$ ${product.price!}  X 0",
                   color: AppColors.mainBlackColor,
                   size: Dimensions.font26,
                 ),
